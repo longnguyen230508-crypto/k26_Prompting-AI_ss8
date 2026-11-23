@@ -1,0 +1,41 @@
+**2. Vấn đề hiện tại (Tại sao lại lỗi?)**
+
+Khai báo các biến số lộn xộn (lúc dùng ngoặc nhọn, lúc dùng ngoặc vuông) làm AI bị nhầm lẫn và không nhận diện được biến để thay thế.
+
+**3. Hiện trường giả (Prompt lỗi)**
+
+Prompt: Hãy viết một bài chia sẻ về Quản trị Prompt & System Instructions bằng ngôn ngữ \[language\]. Dành cho đối tượng {audience}.
+
+**4. Yêu cầu đầu ra chi tiết**
+
+**Bước 1: Phân tích lỗi:**
+
+Giải thích vì sao cách đặt biến lộn xộn \[language\] và {audience} gây khó khăn cho việc tự động hóa.
+
+**Bước 2: Đồng bộ biến số:
+
+Đưa toàn bộ biến về dạng nhất quán \[NGÔN_NGỮ\], \[ĐỐI_TƯỢNG\] viết hoa rõ ràng.
+
+
+ Bước 1: Phân tích lỗi
+
+Việc dùng lẫn lộn nhiều cú pháp biến số như language: ngoặc vuông, chữ thường, tiếng Anh và 
+audience: ngoặc nhọn, chữ thường, tiếng Anh gây ra các vấn đề sau khi đưa vào quy trình tự động hóa:
+
+-Khó phân tích cú pháp trong code/workflow: Các công cụ tự động hóa (như Python script, n8n, Make, Zapier) hoặc hàm tìm kiếm-
+thay thế thường quy ước một định dạng chuẩn (ví dụ chỉ quét `{{...}}`, `[...]` hoặc `{...}`). Khi xuất hiện nhiều kiểu ngoặc khác nhau, 
+logic thay thế chuỗi dễ bỏ sót biến hoặc thay sai vị trí.
+
+-Dễ nhầm lẫn với nội dung thật của Prompt: Trong thiết kế prompt (đặc biệt là viết hướng dẫn cấu trúc output, JSON, ví dụ mẫu),
+ ngoặc nhọn `{}` hoặc ngoặc vuông `[]` thường xuyên xuất hiện như một phần của nội dung văn bản hoặc định dạng dữ liệu. Nếu không
+ chuẩn hóa ký hiệu và quy ước đặt tên, cả hệ thống code lẫn AI đều khó phân biệt đâu là **biến cần điền dữ liệu**, đâu là **ký tự trình bày**.
+
+-Giảm tính nhất quán khi mở rộng hàng loạt: Khi áp dụng cho nhiều prompt mẫu (viết email, dịch thuật, tóm tắt...), việc đặt tên 
+biến không đồng nhất (lúc tiếng Anh, lúc tiếng Việt; lúc số ít, lúc viết tắt) khiến việc ánh xạ dữ liệu từ bảng tính/CSDL vào prompt
+ dễ nhầm lẫn, gây lỗi hiển thị hoặc AI hiểu sai ngữ cảnh.
+
+ Bước 2: Đồng bộ biến số
+
+Prompt sau khi chuẩn hóa toàn bộ biến số về dạng `[TÊN_BIẾN]` viết hoa, dùng dấu gạch dưới:
+
+> Hãy viết một bài chia sẻ về Quản trị Prompt & System Instructions bằng ngôn ngữ `[NGÔN_NGỮ]`. Dành cho đối tượng `[ĐỐI_TƯỢNG]`.
